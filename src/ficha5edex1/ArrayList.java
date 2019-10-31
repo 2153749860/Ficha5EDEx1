@@ -23,6 +23,12 @@ public class ArrayList<T> implements ListADT<T> {
         this.list = (T[]) (new Object[DEFAULT_CAPACITY]);
         this.rear = 0;
     }
+    
+    public ArrayList(int tamanho) {
+        this.count = 0;
+        this.list = (T[]) (new Object[tamanho]);
+        this.rear = 0;
+    }
 
     public void add(T element) {
         if (this.count == this.list.length) {
