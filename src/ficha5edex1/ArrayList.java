@@ -13,10 +13,10 @@ import java.util.Iterator;
  */
 public class ArrayList<T> implements ListADT<T> {
 
-    private int count;
-    private T[] list;
-    private int rear;
-    private static int DEFAULT_CAPACITY = 5;
+    protected int count;
+    protected T[] list;
+    protected int rear;
+    protected static int DEFAULT_CAPACITY = 5;
 
     public ArrayList() {
         this.count = 0;

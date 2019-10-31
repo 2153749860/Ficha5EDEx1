@@ -8,11 +8,21 @@ package ficha5edex1;
 /**
  *
  * @author tiago
+ * @param <T>
  */
-public class OrderedList<T> extends ArrayList<T> implements OrderedListADT<T>{
+public class OrderedList<T extends Comparable<T>> extends ArrayList<T> implements OrderedListADT<T>{
 
     public OrderedList() {
-        super();
+    }
+
+    public OrderedList(int tamanho) {
+        super(tamanho);
+    }
+
+    
+    
+    public void add(T element){
+       
     }
     
     

@@ -18,7 +18,7 @@ public class Ficha5EDEx1 {
         // TODO code application logic here
         ArrayList lista1 = new ArrayList();
 
-        int teste = 0;
+        int teste = 13;
 
         switch (teste) {
             case 0: //teste removeFirst com elementos
@@ -73,7 +73,7 @@ public class Ficha5EDEx1 {
                 System.out.println(lista1.contains(0));
                 break;
 
-            case 6: //teste remove
+            case 6: //teste remove de elemento que existe
                 lista1.add(1);
                 lista1.add(2);
                 lista1.add(3);
@@ -123,6 +123,7 @@ public class Ficha5EDEx1 {
                 lista1.add(5);
                 
                 System.out.println(lista1.first());
+                break;
                 
             case 12: //teste metodo last
                 lista1.add(1);
@@ -132,6 +133,8 @@ public class Ficha5EDEx1 {
                 lista1.add(5);
                 
                 System.out.println(lista1.last());
+                break;
+
         }
 
     }
