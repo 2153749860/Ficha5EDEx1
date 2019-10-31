@@ -18,7 +18,7 @@ public class Ficha5EDEx1 {
         // TODO code application logic here
         ArrayList lista1 = new ArrayList();
 
-        int teste = 11;
+        int teste = 12;
 
         switch (teste) {
             case 0: //teste removeFirst com elementos
@@ -124,7 +124,14 @@ public class Ficha5EDEx1 {
                 
                 System.out.println(lista1.first());
                 
-
+            case 12: //teste metodo last
+                lista1.add(1);
+                lista1.add(2);
+                lista1.add(3);
+                lista1.add(4);
+                lista1.add(5);
+                
+                System.out.println(lista1.last());
         }
 
     }
