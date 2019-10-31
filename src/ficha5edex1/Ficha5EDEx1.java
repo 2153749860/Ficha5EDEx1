@@ -18,7 +18,7 @@ public class Ficha5EDEx1 {
         // TODO code application logic here
         ArrayList lista1 = new ArrayList();
 
-        int teste = 12;
+        int teste = 0;
 
         switch (teste) {
             case 0: //teste removeFirst com elementos
