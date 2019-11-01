@@ -10,39 +10,61 @@ import java.util.Iterator;
 /**
  *
  * @author tiago
+ * @param <T>
  */
 public class ArrayList<T> implements ListADT<T> {
 
-    protected int count;
+    /**
+     *
+     * array of generic elements to represent the ArrayList
+     */
     protected T[] list;
+    /**
+     * int that represents the next available position in the ArrayList
+     */
     protected int rear;
+    /**
+     * constant to represent the default capacity of the ArrayList
+     */
     protected static int DEFAULT_CAPACITY = 5;
 
+    /**
+     * Creates an empty list using the default capacity.
+     */
     public ArrayList() {
-        this.count = 0;
         this.list = (T[]) (new Object[DEFAULT_CAPACITY]);
         this.rear = 0;
     }
-    
+
+    /**
+     * Creates an empty list using the specified capacity.
+     *
+     * @param tamanho represents the specified capacity
+     */
     public ArrayList(int tamanho) {
-        this.count = 0;
         this.list = (T[]) (new Object[tamanho]);
         this.rear = 0;
     }
 
+    /**
+     * Used only for testing. Adds one element to the rear of this list.
+     *
+     * @param element the element to be added to the rear of this list
+     */
     public void add(T element) {
-        if (this.count == this.list.length) {
+        if (this.rear == this.list.length) {
             this.expandCapacity();
             list[this.rear] = element;
             this.rear++;
-            this.count++;
         } else {
             list[this.rear] = element;
             this.rear++;
-            this.count++;
         }
     }
 
+    /**
+     * Used only for testing. Expands the capacity of this queue
+     */
     public void expandCapacity() {
         T[] newList = (T[]) (new Object[DEFAULT_CAPACITY * 2]);
 
@@ -60,23 +82,15 @@ public class ArrayList<T> implements ListADT<T> {
      */
     @Override
     public T removeFirst() throws EmptyCollectionException {
-        //se a lista estiver vazia
         if (this.isEmpty()) {
             throw new EmptyCollectionException("Lista Vazia!");
         } else {
-            //guarda item a ser removido
             T removido = this.first();
-            //ciclo for que começa na primeira posição, que vai mover todos os items uma casa para a esquerda
-            for (int i = 0; i < this.list.length-1; i++) {
+            for (int i = 0; i < this.rear - 1; i++) {
                 this.list[i] = this.list[i + 1];
             }
-            //coloca o ultimo elemento a null
             this.list[this.rear - 1] = null;
-            //decrementa rear
             this.rear--;
-            //decrementa count
-            this.count--;
-            //retorna item removido
             return removido;
         }
     }
@@ -85,22 +99,16 @@ public class ArrayList<T> implements ListADT<T> {
      * Removes and returns the last element from this list.
      *
      * @return the last element from this list
+     * @throws ficha5edex1.EmptyCollectionException
      */
     @Override
     public T removeLast() throws EmptyCollectionException {
-        //se a lista estiver vazia
         if (this.isEmpty()) {
             throw new EmptyCollectionException("Lista Vazia!");
         } else {
-            //guarda item a ser removido
             T removido = this.last();
-            //coloca posicao desse item a null
             this.list[this.rear - 1] = null;
-            //decrementa rear
             this.rear--;
-            //decrementa count
-            this.count--;
-            //retorna item removido
             return removido;
         }
     }
@@ -109,54 +117,56 @@ public class ArrayList<T> implements ListADT<T> {
      * Removes and returns the specified element from this list.
      *
      * @param element the element to be removed from the list
+     * @return the removed element
+     * @throws ficha5edex1.EmptyCollectionException
+     * @throws ficha5edex1.ElementoNaoExisteException
      */
     @Override
     public T remove(T element) throws EmptyCollectionException, ElementoNaoExisteException {
-        //se a lista estiver vazia
         if (this.isEmpty()) {
             throw new EmptyCollectionException("Lista Vazia!");
         }
-        //se a lista contem o elemento
-        if (this.contains(element)) {
-            //guarda a posição do item a ser removido
-            int posicaoRemovido = this.find(element);
-            //guarda o item a ser removido
-            T removido = this.list[this.find(element)];
-            //ciclo for que começa na posição do item a ser removido, que vai mover todos os items uma casa para a esquerda
-            for (int i = posicaoRemovido; i < this.rear - 1; i++) {
-                this.list[i] = this.list[i + 1];
-            }
-            //coloca posição desse item a null
-            this.list[this.rear - 1] = null;
-            //decrementa rear
-            this.rear--;
-            //decrementa count
-            this.count--;
-            //retorna item removido
-            return removido;
-            //se nao existir
-        } else {
+
+        int elementPosition = this.find(element);
+
+        if (elementPosition == -1) {
             throw new ElementoNaoExisteException("Elemento não existe!");
         }
+        T removido = this.list[elementPosition];
+        for (int i = elementPosition; i < this.rear - 1; i++) {
+            this.list[i] = this.list[i + 1];
+        }
+        this.list[this.rear - 1] = null;
+        this.rear--;
+        return removido;
     }
 
     /**
      * Returns a reference to the first element in this list.
      *
      * @return a reference to the first element in this list
+     * @throws ficha5edex1.EmptyCollectionException
      */
     @Override
-    public T first() {
+    public T first() throws EmptyCollectionException {
+        if (this.isEmpty()) {
+            throw new EmptyCollectionException("Lista Vazia!");
+        }
         return this.list[0];
+
     }
 
     /**
      * Returns a reference to the last element in this list.
      *
      * @return a reference to the last element in this list
+     * @throws ficha5edex1.EmptyCollectionException
      */
     @Override
-    public T last() {
+    public T last() throws EmptyCollectionException {
+        if (this.isEmpty()) {
+            throw new EmptyCollectionException("Lista Vazia!");
+        }
         return this.list[this.rear - 1];
     }
 
@@ -185,9 +195,8 @@ public class ArrayList<T> implements ListADT<T> {
     public boolean contains(T target) {
         if (this.find(target) != -1) {
             return true;
-        } else {
-            return false;
         }
+        return false;
     }
 
     /**
@@ -208,7 +217,7 @@ public class ArrayList<T> implements ListADT<T> {
      */
     @Override
     public int size() {
-        return this.count;
+        return this.rear;
     }
 
     /**
@@ -218,7 +227,7 @@ public class ArrayList<T> implements ListADT<T> {
      */
     @Override
     public Iterator iterator() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return new MyItr();
     }
 
     /**
@@ -229,12 +238,14 @@ public class ArrayList<T> implements ListADT<T> {
     @Override
     public String toString() {
         StringBuilder str = new StringBuilder();
-        str.append("Primeiro elemento: ");
-        str.append(this.list[0]);
-        str.append("\n");
-        str.append("Ultimo elemento: ");
-        str.append(this.list[this.rear - 1]);
-        str.append("\n");
+        if (!this.isEmpty()) {
+            str.append("Primeiro elemento: ");
+            str.append(this.list[0]);
+            str.append("\n");
+            str.append("Ultimo elemento: ");
+            str.append(this.list[this.rear - 1]);
+            str.append("\n");
+        }
         str.append("Nº elementos: ");
         str.append(this.rear);
         str.append("\n");
@@ -246,8 +257,51 @@ public class ArrayList<T> implements ListADT<T> {
             str.append(this.list[i]);
             str.append("\n");
         }
-
         return str.toString();
+    }
+
+    /**
+     * Class that represents a Iterator
+     */
+    private class MyItr implements Iterator<T> {
+
+        /**
+         * int that represents the position of the iterator
+         */
+        int cursor = 0;
+
+        /**
+         * Creates an Iterator.
+         *
+         */
+        MyItr() {
+        }
+
+        /**
+         * Verifies if there is a element next to the current
+         *
+         * @return true if the element exists
+         */
+        @Override
+        public boolean hasNext() {
+            return cursor != size();
+        }
+
+        /**
+         * Moves the iterator to the next position.
+         *
+         * @return the previous position the cursor was
+         */
+        @Override
+        public T next() {
+            int i = cursor;
+            if (i >= size()) {
+                System.out.println("Nao existe");
+            }
+            cursor++;
+            return list[i];
+        }
+
     }
 
 }

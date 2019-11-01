@@ -13,6 +13,7 @@ package ficha5edex1;
 public class OrderedList<T extends Comparable<T>> extends ArrayList<T> implements OrderedListADT<T>{
 
     public OrderedList() {
+        super();
     }
 
     public OrderedList(int tamanho) {
@@ -22,7 +23,7 @@ public class OrderedList<T extends Comparable<T>> extends ArrayList<T> implement
     
     
     public void add(T element){
-       
+      
     }
     
     
