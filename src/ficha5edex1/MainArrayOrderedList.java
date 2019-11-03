@@ -16,26 +16,57 @@ public class MainArrayOrderedList {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) throws EmptyCollectionException, ElementoNaoExisteException {
+    public static void main(String[] args) {
         // TODO code application logic here
-        ArrayOrderedList<String> lista1 = new ArrayOrderedList<>();
+        ArrayOrderedList<String> lista1 = new ArrayOrderedList();
 
-        int teste = 0;
+        int teste = 2;
 
         switch (teste) {
-            case 0: //teste tudo direito
-                lista1.add("A");
-                lista1.add("B");
-                lista1.add("C");
+            case 0: //teste de ordenar alguns elementos
                 lista1.add("D");
+                lista1.add("B");
+                lista1.add("A");
+                lista1.add("C");
 
-                /*
                 Iterator it = lista1.iterator();
+
                 while (it.hasNext()) {
-                    int obj = (int) it.next();
+                    String obj = (String) it.next();
                     System.out.println(obj);
                 }
-*/
+                break;
+
+            case 1: //teste ordenar com lista cheia
+                lista1.add("D");
+                lista1.add("B");
+                lista1.add("A");
+                lista1.add("C");
+                lista1.add("E");
+
+                Iterator it2 = lista1.iterator();
+
+                while (it2.hasNext()) {
+                    String obj = (String) it2.next();
+                    System.out.println(obj);
+                }
+                break;
+
+            case 2: //teste ordenar com lista cheia e adicionar mais um para expandCapacity da lista
+                lista1.add("D");
+                lista1.add("B");
+                lista1.add("A");
+                lista1.add("C");
+                lista1.add("E");
+                lista1.add("G");
+                lista1.add("F");
+
+                Iterator it3 = lista1.iterator();
+
+                while (it3.hasNext()) {
+                    String obj = (String) it3.next();
+                    System.out.println(obj);
+                }
                 break;
         }
 
