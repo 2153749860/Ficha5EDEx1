@@ -13,7 +13,16 @@ public class ArrayUnorderedList<T> extends ArrayList<T> implements UnorderedList
 
     @Override
     public void addToFront(T element) {
-
+        if(this.rear == this.list.length){
+            this.expandCapacity();
+        }
+        
+        //ciclo for
+        for(int i = this.rear-1; i >= 0; i--){
+            this.list[i+1] = this.list[i];
+        }
+        this.list[0] = element;
+        this.rear++;
     }
 
     @Override
