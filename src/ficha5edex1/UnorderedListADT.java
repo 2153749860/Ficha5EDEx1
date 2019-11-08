@@ -15,5 +15,5 @@ public interface UnorderedListADT<T> extends ListADT<T> {
 
     public void addToRear(T element);
 
-    public void addAfter(T element, T atual);
+    public void addAfter(T element, T atual) throws ElementoNaoExisteException;
 }

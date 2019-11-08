@@ -38,8 +38,25 @@ public class ArrayUnorderedList<T> extends ArrayList<T> implements UnorderedList
     }
 
     @Override
-    public void addAfter(T element, T atual) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void addAfter(T element, T atual) throws ElementoNaoExisteException{
+        int posicao = this.find(atual);
+        
+        //lançar execao
+        if(posicao == -1){
+            throw new ElementoNaoExisteException("Elemento não existe!");
+        }
+        
+        if(this.rear == this.list.length){
+            this.expandCapacity();
+        }
+        
+        //ciclo for
+        for(int i = this.rear-1; i > posicao; i--){
+            this.list[i+1] = this.list[i];
+        }
+        this.list[posicao+1] = element;
+        this.rear++;
+        
     }
 
 }

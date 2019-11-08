@@ -16,11 +16,11 @@ public class MainArrayUnorderedList {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws ElementoNaoExisteException {
         // TODO code application logic here
         ArrayUnorderedList<String> lista1 = new ArrayUnorderedList();
 
-        int teste = 4;
+        int teste = 6;
 
         switch (teste) {
             case 0: //teste addToRear
@@ -87,6 +87,42 @@ public class MainArrayUnorderedList {
 
                 while (it5.hasNext()) {
                     String obj = (String) it5.next();
+                    System.out.println(obj);
+                }
+                break;
+                
+            case 5: //teste addAfter
+                lista1.addToRear("D");
+                lista1.addToRear("B");
+                lista1.addToRear("A");
+                lista1.addToRear("C");
+                lista1.addToRear("E");
+                
+                lista1.addAfter("X", "C");
+                
+                
+                Iterator it6 = lista1.iterator();
+
+                while (it6.hasNext()) {
+                    String obj = (String) it6.next();
+                    System.out.println(obj);
+                }
+                break;
+                
+            case 6: //teste addAfter sem o elemento existir
+                lista1.addToRear("D");
+                lista1.addToRear("B");
+                lista1.addToRear("A");
+                lista1.addToRear("C");
+                lista1.addToRear("E");
+                
+                lista1.addAfter("X", "S");
+                
+                
+                Iterator it7 = lista1.iterator();
+
+                while (it7.hasNext()) {
+                    String obj = (String) it7.next();
                     System.out.println(obj);
                 }
                 break;
