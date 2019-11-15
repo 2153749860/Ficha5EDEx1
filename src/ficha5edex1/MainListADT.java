@@ -20,7 +20,7 @@ public class MainListADT {
         // TODO code application logic here
         ArrayList lista1 = new ArrayList();
 
-        int teste = 21;
+        int teste = 24;
 
         switch (teste) {
             case 0: //teste removeFirst com elementos na lista
@@ -211,6 +211,41 @@ public class MainListADT {
                     int obj =  (int) it.next();
                     System.out.println(obj);
                 }
+                break;
+                
+            case 22: //teste iterator remove
+                lista1.add(1);
+                lista1.add(2);
+                lista1.add(3);
+                Iterator it1 = lista1.iterator();
+                it1.remove();
+                while (it1.hasNext()) {
+                    int obj =  (int) it1.next();
+                    System.out.println(obj);
+                }
+                break;
+                
+            case 23:
+                lista1.add(1);
+                lista1.add(2);
+                lista1.add(3);
+                Iterator it2 = lista1.iterator();        
+                it2.remove();
+                Iterator it3 = lista1.iterator();
+                while (it3.hasNext()) {
+                    int obj =  (int) it3.next();
+                    System.out.println(obj);
+                }
+                break;
+               
+            case 24:
+                lista1.add(1);
+                lista1.add(2);
+                lista1.add(3);
+                Iterator it4 = lista1.iterator();        
+                it4.remove();
+                it4.remove();
+                
                 break;
         }
 

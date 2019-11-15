@@ -5,6 +5,7 @@
  */
 package ficha5edex1;
 
+import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
@@ -13,7 +14,9 @@ import java.util.NoSuchElementException;
  * @author tiago
  * @param <T>
  */
-public class ArrayList<T> implements ListADT<T> {
+public class ArrayList<T> implements ListADT<T>{
+        
+    protected int modCount;
 
     /**
      *
@@ -35,6 +38,7 @@ public class ArrayList<T> implements ListADT<T> {
     public ArrayList() {
         this.list = (T[]) (new Object[DEFAULT_CAPACITY]);
         this.rear = 0;
+        this.modCount = 0;
     }
 
     /**
@@ -45,6 +49,7 @@ public class ArrayList<T> implements ListADT<T> {
     public ArrayList(int tamanho) {
         this.list = (T[]) (new Object[tamanho]);
         this.rear = 0;
+        this.modCount = 0;
     }
 
     /**
@@ -56,11 +61,11 @@ public class ArrayList<T> implements ListADT<T> {
         if (this.rear == this.list.length) {
             this.expandCapacity();
             list[this.rear] = element;
-            this.rear++;
         } else {
             list[this.rear] = element;
-            this.rear++;
         }
+        this.rear++;
+        this.modCount++;
     }
 
     /**
@@ -92,6 +97,7 @@ public class ArrayList<T> implements ListADT<T> {
             }
             this.list[this.rear - 1] = null;
             this.rear--;
+            this.modCount++;
             return removido;
         }
     }
@@ -110,6 +116,7 @@ public class ArrayList<T> implements ListADT<T> {
             T removido = this.last();
             this.list[this.rear - 1] = null;
             this.rear--;
+            this.modCount++;
             return removido;
         }
     }
@@ -139,6 +146,7 @@ public class ArrayList<T> implements ListADT<T> {
         }
         this.list[this.rear - 1] = null;
         this.rear--;
+        this.modCount++;
         return removido;
     }
 
@@ -227,7 +235,8 @@ public class ArrayList<T> implements ListADT<T> {
      * @return an iterator over the elements in this list
      */
     @Override
-    public Iterator iterator() {
+    public Iterator iterator()
+    {
         return new MyItr();
     }
 
@@ -265,6 +274,9 @@ public class ArrayList<T> implements ListADT<T> {
      * Class that represents a Iterator
      */
     private class MyItr implements Iterator<T> {
+        
+        int expectedModCount;
+        boolean okToRemove;
 
         /**
          * int that represents the position of the iterator
@@ -276,6 +288,8 @@ public class ArrayList<T> implements ListADT<T> {
          *
          */
         MyItr() {
+            this.expectedModCount = modCount;
+            this.okToRemove = true;
         }
 
         /**
@@ -284,8 +298,13 @@ public class ArrayList<T> implements ListADT<T> {
          * @return true if the element exists
          */
         @Override
-        public boolean hasNext() {
+        public boolean hasNext(){
+            if(this.expectedModCount != modCount){
+                throw new ConcurrentModificationException("ModCount incompativel!");
+            }
+            
             return cursor != size();
+            
         }
 
         /**
@@ -298,7 +317,26 @@ public class ArrayList<T> implements ListADT<T> {
             if (!hasNext()) {
                 throw new NoSuchElementException();
             }
+            
             return list[cursor++];
+        }
+        
+        @Override
+        public void remove() {
+            if(this.expectedModCount != modCount){
+                throw new ConcurrentModificationException("ModCount incompativel!");
+            }
+            if(!this.okToRemove){
+                throw new NoSuchElementException("Ja foi removido!");
+            }
+            
+            T element = list[cursor];
+            
+            try{
+                ArrayList.this.remove(element);
+            } catch (EmptyCollectionException | ElementoNaoExisteException ex){
+                throw new ConcurrentModificationException("Lista incompativel!");
+            }
         }
 
     }
