@@ -289,7 +289,7 @@ public class ArrayList<T> implements ListADT<T>{
          */
         MyItr() {
             this.expectedModCount = modCount;
-            this.okToRemove = true;
+            okToRemove = false;
         }
 
         /**
@@ -298,13 +298,11 @@ public class ArrayList<T> implements ListADT<T>{
          * @return true if the element exists
          */
         @Override
-        public boolean hasNext(){
-            if(this.expectedModCount != modCount){
-                throw new ConcurrentModificationException("ModCount incompativel!");
+        public boolean hasNext() {
+            if (this.expectedModCount != modCount) {
+                throw new ConcurrentModificationException("Lista imcompativel!");
             }
-            
             return cursor != size();
-            
         }
 
         /**
@@ -317,26 +315,31 @@ public class ArrayList<T> implements ListADT<T>{
             if (!hasNext()) {
                 throw new NoSuchElementException();
             }
-            
+            okToRemove = true;
             return list[cursor++];
         }
-        
+
         @Override
         public void remove() {
-            if(this.expectedModCount != modCount){
-                throw new ConcurrentModificationException("ModCount incompativel!");
+            if (this.expectedModCount != modCount) {
+                throw new ConcurrentModificationException("modCount incompativel");
             }
-            if(!this.okToRemove){
-                throw new NoSuchElementException("Ja foi removido!");
+
+            if (!okToRemove) {
+                throw new NoSuchElementException("impossivel remover");
             }
             
-            T element = list[cursor];
-            
-            try{
+            T element = list[cursor - 1];
+
+            try {
                 ArrayList.this.remove(element);
-            } catch (EmptyCollectionException | ElementoNaoExisteException ex){
-                throw new ConcurrentModificationException("Lista incompativel!");
+                cursor--;
+
+                this.expectedModCount = modCount;
+            } catch (EmptyCollectionException | ElementoNaoExisteException ex) {
+                throw new ConcurrentModificationException();
             }
+
         }
 
     }
