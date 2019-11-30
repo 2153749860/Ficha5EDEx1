@@ -5,8 +5,6 @@
  */
 package ficha5edex1;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -24,46 +22,45 @@ public class ArrayOrderedList<T> extends ArrayList<T> implements OrderedListADT<
     }
 
     @Override
-    public void add(T element) {
+    public void add(T element) throws NonComparableExcep {
 
         //cast
-        if (element instanceof Comparable) {
-            Comparable<T> x = (Comparable<T>) element;
-            
-            if(this.rear == this.list.length){
-                this.expandCapacity();
-            }
+        if (!(element instanceof Comparable)) {
+            throw new NonComparableExcep("Nao e comparavel");
+        }
 
-            //meter no inicio sem nada
-            if (this.isEmpty()) {
-                this.list[this.rear] = element;
-                this.rear++;
-                return;
-            }
-            //meter a meio de cenas
-            if (!this.isEmpty()) {
-                for (int i = 0; i < this.rear; i++) {
-                    if (x.compareTo(this.list[i]) < 0) {
-                        for (int j = this.rear - 1; j >= i; j--) {
-                            list[j + 1] = list[j];
-                        }
-                        list[i] = element;
-                        this.rear++;
-                        return;
-                    }
+        if (this.rear == this.list.length) {
+            this.expandCapacity();
+        }
+
+        Comparable<T> x = (Comparable<T>) element;
+
+        //meter no inicio sem nada
+        if (this.isEmpty()) {
+            this.list[this.rear] = element;
+        } else if (x.compareTo(list[this.rear - 1]) > 0) {
+            list[this.rear] = element;
+        } else {
+            int indice = 0;
+            boolean found = false;
+            // procura
+            for (int i = 0; i < this.rear && found == false; i++) {
+                if (x.compareTo(this.list[i]) < 0) {
+                    indice = i;
+                    found = true;
                 }
             }
 
-            //meter no fim
-            list[this.rear] = element;
-            this.rear++;
-        } else {
-            try {
-                throw new NonComparableExcep("Não é comparavel!");
-            } catch (NonComparableExcep ex) {
-                Logger.getLogger(ArrayOrderedList.class.getName()).log(Level.SEVERE, null, ex);
+            ///shift
+            for (int j = this.rear - 1; j >= indice; j--) {
+                list[j + 1] = list[j];
             }
+
+            ///colocar
+            list[indice] = element;
+
         }
+        this.rear++;
 
     }
 
