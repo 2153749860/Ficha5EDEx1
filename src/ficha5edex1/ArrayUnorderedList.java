@@ -38,12 +38,12 @@ public class ArrayUnorderedList<T> extends ArrayList<T> implements UnorderedList
     }
 
     @Override
-    public void addAfter(T element, T atual) throws ElementoNaoExisteException{
+    public void addAfter(T element, T atual) throws ElementDoesNotExistException{
         int posicao = this.find(atual);
         
         //lançar execao
         if(posicao == -1){
-            throw new ElementoNaoExisteException("Elemento não existe!");
+            throw new ElementDoesNotExistException("Elemento não existe!");
         }
         
         if(this.rear == this.list.length){

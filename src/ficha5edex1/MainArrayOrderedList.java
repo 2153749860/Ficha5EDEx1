@@ -16,7 +16,7 @@ public class MainArrayOrderedList {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws NonComparableExcep {
         // TODO code application logic here
         ArrayOrderedList<String> lista1 = new ArrayOrderedList();
 

@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package ficha5edex1;
 
 import java.util.ConcurrentModificationException;
@@ -16,21 +11,31 @@ import java.util.NoSuchElementException;
  */
 public class ArrayList<T> implements ListADT<T> {
 
+    /**
+     * int that represents the number of changes in the arrayList
+     */
     protected int modCount;
-
+    
     /**
      *
      * array of generic elements to represent the ArrayList
      */
     protected T[] list;
+    
     /**
      * int that represents the next available position in the ArrayList
      */
     protected int rear;
+    
     /**
      * constant to represent the default capacity of the ArrayList
      */
     protected static int DEFAULT_CAPACITY = 5;
+    
+    /**
+     * constant to represent the default multiplier to expand the capacity of the arrayList
+     */
+    protected static int DEFAULT_MULTIPLIER = 2;
 
     /**
      * Creates an empty list using the default capacity.
@@ -62,7 +67,7 @@ public class ArrayList<T> implements ListADT<T> {
             this.expandCapacity();
         }
         
-        list[this.rear] = element;
+        this.list[this.rear] = element;
         this.rear++;
         this.modCount++;
     }
@@ -71,7 +76,7 @@ public class ArrayList<T> implements ListADT<T> {
      * Used only for testing. Expands the capacity of this queue
      */
     public void expandCapacity() {
-        T[] newList = (T[]) (new Object[DEFAULT_CAPACITY * 2]);
+        T[] newList = (T[]) (new Object[this.list.length * DEFAULT_MULTIPLIER]);
 
         for (int i = 0; i < this.rear; i++) {
             newList[i] = this.list[i];
@@ -84,6 +89,9 @@ public class ArrayList<T> implements ListADT<T> {
      * Removes and returns the first element from this list.
      *
      * @return the first element from this list
+     * 
+     * @throws ficha5edex1.EmptyCollectionException 
+     * Returns when the arrayList is empty
      */
     @Override
     public T removeFirst() throws EmptyCollectionException {
@@ -91,15 +99,16 @@ public class ArrayList<T> implements ListADT<T> {
             throw new EmptyCollectionException("Lista Vazia!");
         } 
                 
-        T removido = this.first();
+        T removed = this.first();
         for (int i = 0; i < this.rear - 1; i++) {
             this.list[i] = this.list[i + 1];
         }
         this.list[this.rear - 1] = null;
+        
         this.rear--;
         this.modCount++;
 
-        return removido;
+        return removed;
         
     }
 
@@ -107,7 +116,9 @@ public class ArrayList<T> implements ListADT<T> {
      * Removes and returns the last element from this list.
      *
      * @return the last element from this list
+     * 
      * @throws ficha5edex1.EmptyCollectionException
+     * Returns when the arrayList is empty
      */
     @Override
     public T removeLast() throws EmptyCollectionException {
@@ -115,12 +126,13 @@ public class ArrayList<T> implements ListADT<T> {
             throw new EmptyCollectionException("Lista Vazia!");
         }
         
-        T removido = this.last();
+        T removed = this.last();
         this.list[this.rear - 1] = null;
+        
         this.rear--;
         this.modCount++;
 
-        return removido;       
+        return removed;       
     }
 
     /**
@@ -128,11 +140,15 @@ public class ArrayList<T> implements ListADT<T> {
      *
      * @param element the element to be removed from the list
      * @return the removed element
+     * 
      * @throws ficha5edex1.EmptyCollectionException
-     * @throws ficha5edex1.ElementoNaoExisteException
+     * Returns when the arrayList is empty
+     * 
+     * @throws ficha5edex1.ElementDoesNotExistException
+     * Returns when the element to be removed doesn't exist
      */
     @Override
-    public T remove(T element) throws EmptyCollectionException, ElementoNaoExisteException {
+    public T remove(T element) throws EmptyCollectionException, ElementDoesNotExistException {
         if (this.isEmpty()) {
             throw new EmptyCollectionException("Lista Vazia!");
         }
@@ -140,25 +156,28 @@ public class ArrayList<T> implements ListADT<T> {
         int elementPosition = this.find(element);
 
         if (elementPosition == -1) {
-            throw new ElementoNaoExisteException("Elemento não existe!");
+            throw new ElementDoesNotExistException("Elemento não existe!");
         }
         
-        T removido = this.list[elementPosition];
+        T removed = this.list[elementPosition];
         for (int i = elementPosition; i < this.rear - 1; i++) {
             this.list[i] = this.list[i + 1];
         }
         this.list[this.rear - 1] = null;
+        
         this.rear--;
         this.modCount++;
 
-        return removido;
+        return removed;
     }
 
     /**
      * Returns a reference to the first element in this list.
      *
      * @return a reference to the first element in this list
+     * 
      * @throws ficha5edex1.EmptyCollectionException
+     * Returns when the arrayList is empty
      */
     @Override
     public T first() throws EmptyCollectionException {
@@ -173,7 +192,9 @@ public class ArrayList<T> implements ListADT<T> {
      * Returns a reference to the last element in this list.
      *
      * @return a reference to the last element in this list
+     * 
      * @throws ficha5edex1.EmptyCollectionException
+     * Returns when the arrayList is empty
      */
     @Override
     public T last() throws EmptyCollectionException {
@@ -185,17 +206,19 @@ public class ArrayList<T> implements ListADT<T> {
     }
 
     /**
-     * Método que retorna a posição de um elemento
+     * Returns the position of a given element
      *
-     * @param element - elemento que procura
-     * @return posicao desse elemento
+     * @param element - element to be found
+     * 
+     * @return position of the given element
      */
     public int find(T element) {
         for (int i = 0; i < this.rear; i++) {
             if (this.list[i].equals(element)) {
                 return i;
             }
-        }        
+        }
+        
         return -1;
     }
 
@@ -341,7 +364,7 @@ public class ArrayList<T> implements ListADT<T> {
                 this.expectedModCount = modCount;
                 
                 cursor--;    
-            } catch (EmptyCollectionException | ElementoNaoExisteException ex) {
+            } catch (EmptyCollectionException | ElementDoesNotExistExceptionex) {
                 throw new ConcurrentModificationException();
             }
 

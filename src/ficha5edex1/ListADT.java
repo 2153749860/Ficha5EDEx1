@@ -33,7 +33,7 @@ public interface ListADT<T> extends Iterable<T> {
      *
      * @param element the element to be removed from the list
      */
-    public T remove(T element) throws EmptyCollectionException, ElementoNaoExisteException;
+    public T remove(T element) throws EmptyCollectionException, ElementDoesNotExistException;
 
     /**
      * Returns a reference to the first element in this list.

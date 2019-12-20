@@ -9,9 +9,9 @@ package ficha5edex1;
  *
  * @author tiago
  */
-public class ElementoNaoExisteException extends Exception{
+public class ElementDoesNotExistException extends Exception{
 
-    public ElementoNaoExisteException(String message) {
+    public ElementDoesNotExistException(String message) {
         super(message);
     }
     

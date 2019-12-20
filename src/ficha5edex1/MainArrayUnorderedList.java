@@ -16,11 +16,11 @@ public class MainArrayUnorderedList {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) throws ElementoNaoExisteException {
+    public static void main(String[] args) throws ElementDoesNotExistException {
         // TODO code application logic here
         ArrayUnorderedList<String> lista1 = new ArrayUnorderedList();
 
-        int teste = 6;
+        int teste = 0;
 
         switch (teste) {
             case 0: //teste addToRear

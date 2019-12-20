@@ -16,7 +16,7 @@ public class MainListADT {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) throws EmptyCollectionException, ElementoNaoExisteException {
+    public static void main(String[] args) throws EmptyCollectionException, ElementDoesNotExistException {
         // TODO code application logic here
         ArrayList lista1 = new ArrayList();
 
@@ -282,8 +282,6 @@ public class MainListADT {
                     it6.remove();
 
                 }
-
-                
 
                 break;
         }
